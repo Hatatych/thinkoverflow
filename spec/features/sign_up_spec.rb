@@ -40,10 +40,7 @@ feature 'User can sign up', %q{
   end
 
   scenario 'Authenticated user tries to access register page' do
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+    sign_in(user)
 
     visit new_user_registration_path
     expect(current_path).to eq root_path
