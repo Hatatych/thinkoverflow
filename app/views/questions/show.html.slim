@@ -1,2 +1,17 @@
 h1= @question.title
 p= @question.body
+hr
+- if @question.answers.exists?
+  h3 Answers:
+  = render @question.answers
+  hr
+- else
+  h3 Leave first answer!
+
+- if user_signed_in?
+  = form_with model: [@question, @answer], local: true do |form|
+    = form.label :body, 'Your answer:'
+    br
+    = form.text_area :body, size: '60x5'
+    br
+    = form.submit 'Go for it!', class: 'btn btn-primary'

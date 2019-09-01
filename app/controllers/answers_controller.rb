@@ -19,7 +19,8 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      render :new
+      flash[:alert] = 'Error saving answer!'
+      redirect_to @question
     end
   end
 
