@@ -4,7 +4,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create :question }
   let(:answers) { create_list(:answer, 3, question: question) }
   let(:answer) { create :answer, question: question }
-  let(:author) { create :user }
+  let(:user) { create :user }
 
   describe 'GET #index' do
     let(:other_question) { create :question }
@@ -43,10 +43,12 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves a new answer to database' do
-        expect { post :create, params: { answer: attributes_for(:answer), author_id: author, question_id: question } }.to change(question.answers, :count).by(1)
+        login(user)
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.to change(question.answers, :count).by(1)
       end
 
       it 'redirects to index' do
+        login(user)
         post :create, params: { answer: attributes_for(:answer), question_id: question }
         expect(response).to redirect_to assigns(:question)
       end
@@ -54,11 +56,13 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'doesnt save answer to db' do
+        login(user)
         expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question } }.to_not change(Answer, :count)
       end
 
       it 're-renders question template' do
-        post :create, params: { answer: attributes_for(:answer, :invalid), author_id: author, question_id: question }
+        login(user)
+        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question }
         expect(response).to render_template 'questions/show'
       end
     end
@@ -98,15 +102,17 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create :answer, question: question }
+    let!(:answer) { create :answer, question: question, author: user }
 
     it 'deletes an answer' do
+      login(user)
       expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
     end
 
     it 'redirects to index' do
+      login(user)
       delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question_path(answer.question)
+      expect(response).to redirect_to question_path(question)
     end
   end
 end
