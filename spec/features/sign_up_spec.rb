@@ -11,6 +11,7 @@ feature 'User can sign up', %q{
     background do
       visit new_user_registration_path
       fill_in 'Email', with: 'test01@example.com'
+      fill_in 'Username', with: 'TestUsername01'
       fill_in 'Password', with: 'Mysecretpass123'
       fill_in 'Password confirmation', with: 'Mysecretpass123'
     end

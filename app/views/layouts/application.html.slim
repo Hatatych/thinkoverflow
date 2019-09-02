@@ -10,8 +10,8 @@ html
 
   body
     = render 'shared/nav'
-    = render 'shared/flash'
     div(class='container')
       div(class='row justify-content-center mt-4')
         div(class='col col-md-10')
+          = render 'shared/flash'
           == yield
