@@ -30,4 +30,10 @@ feature 'User can delete an answer', %q{
     visit question_path(question)
     expect(page).not_to have_content 'Delete'
   end
+
+  scenario 'Guest tries to delete an answer' do
+    click_on 'Log out'
+    visit visit question_path(question)
+    expect(page).not_to have_content 'Delete'
+  end
 end

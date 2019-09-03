@@ -34,8 +34,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer = current_user.answers.find_by(id: params[:id])&.destroy
-    redirect_to @answer.question
+    if current_user && (@answer = current_user.answers.find_by(id: params[:id])&.destroy)
+      redirect_to @answer.question
+    else
+      flash[:error] = 'Error while deleting'
+      redirect_to answer_path(params[:id])
+    end
   end
 
   private

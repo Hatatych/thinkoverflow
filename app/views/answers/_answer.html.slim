@@ -2,4 +2,4 @@
   div
     = answer.body
     small(class="font-italic")= " by #{answer.author.username}"
-    = link_to 'Delete', answer_path(answer), class: 'badge badge-secondary ml-2', method: :delete, data: { confirm: 'Are you sure?' } if answer.author == current_user
+    = link_to 'Delete', answer_path(answer), class: 'badge badge-secondary ml-2', method: :delete, data: { confirm: 'Are you sure?' } if current_user && current_user.author?(answer)

@@ -25,4 +25,10 @@ feature 'User can delete a question', %q{
     visit question_path(other_question)
     expect(page).not_to have_content 'Delete'
   end
+
+  scenario 'Guest tries to delete question' do
+    click_on 'Log out'
+    visit question_path(other_question)
+    expect(page).not_to have_content 'Delete'
+  end
 end
