@@ -10,8 +10,6 @@ class User < ApplicationRecord
   validates :username, presence: true
 
   def author?(resource)
-    return true if resource.author == self
-
-    false
+    resource.author == self
   end
 end

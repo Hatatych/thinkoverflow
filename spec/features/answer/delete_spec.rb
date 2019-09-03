@@ -10,29 +10,30 @@ feature 'User can delete an answer', %q{
   given(:second_user) { create(:user) }
   given(:question) { create(:question) }
 
-  background do
-    sign_in(user)
-    visit question_path(question)
-    fill_in 'Your answer:', with: 'This shouldnt exist after delete'
-    click_on 'Go for it!'
-  end
+  context 'authorizated user' do
+    background do
+      sign_in(user)
+      visit question_path(question)
+      fill_in 'Your answer:', with: 'This shouldnt exist after delete'
+      click_on 'Go for it!'
+    end
 
-  scenario 'Author deletes own answer' do
-    expect(page).to have_content 'Delete'
-    expect(page).to have_content 'This shouldnt exist after delete'
-    click_on 'Delete'
-    expect(page).not_to have_content 'This shouldnt exist after delete'
-  end
+    scenario 'Author deletes own answer' do
+      expect(page).to have_content 'Delete'
+      expect(page).to have_content 'This shouldnt exist after delete'
+      click_on 'Delete'
+      expect(page).not_to have_content 'This shouldnt exist after delete'
+    end
 
-  scenario 'User tries to delete other answer' do
-    click_on 'Log out'
-    sign_in(second_user)
-    visit question_path(question)
-    expect(page).not_to have_content 'Delete'
+    scenario 'User tries to delete other answer' do
+      click_on 'Log out'
+      sign_in(second_user)
+      visit question_path(question)
+      expect(page).not_to have_content 'Delete'
+    end
   end
 
   scenario 'Guest tries to delete an answer' do
-    click_on 'Log out'
     visit visit question_path(question)
     expect(page).not_to have_content 'Delete'
   end

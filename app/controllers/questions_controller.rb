@@ -35,7 +35,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    flash[:error] = 'Error while deleting' unless current_user && current_user.questions.find_by(id: params[:id])&.destroy
+    @question = Question.find(params[:id])
+    if current_user&.author?(@question)
+      @question.delete
+    else
+      flash[:error] = 'Error while deleting'
+    end
     redirect_to questions_path
   end
 
