@@ -19,13 +19,11 @@ class AnswersController < ApplicationController
     @answer.author = current_user
     if @answer.save
       redirect_to @question
-    else
-      flash[:alert] = 'Error saving answer!'
-      render 'questions/show'
     end
   end
 
   def update
+    @question = @answer.question
     if @answer.update(answer_params)
       redirect_to @answer.question
     else

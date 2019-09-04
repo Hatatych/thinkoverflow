@@ -17,17 +17,17 @@ feature 'User can post an answer', %q{
       click_on 'MyString'
     end
 
-    scenario 'posts an answer' do
+    scenario 'posts an answer', js: true do
       fill_in 'Your answer', with: 'Sample text'
       click_on 'Go for it!'
 
       expect(page).to have_content 'Sample text'
     end
 
-    scenario 'posts empty answer' do
+    scenario 'posts empty answer', js: true do
       click_on 'Go for it!'
 
-      expect(page).to have_content 'Error saving answer!'
+      expect(page).to have_content "Body can't be blank"
     end
   end
 

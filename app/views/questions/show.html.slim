@@ -5,15 +5,18 @@ p
   span(class='btn btn-outline-secondary btn-sm')= "Asked by #{@question.author.username}"
   = link_to 'Delete', question_path(@question), class: 'btn btn-outline-danger btn-sm ml-3', method: :delete, data: { confirm: 'Are you sure?' } if current_user && current_user.author?(@question)
 hr
-- if @question.answers.exists?
-  h3 Answers:
-  = render @question.answers
-  hr
-- else
-  h3 Leave first answer!
+.answer_errors
+  = render 'shared/errors', resource: @answer
+.answers
+  - if @question.answers.exists?
+    h3 Answers:
+    = render @question.answers
+    hr
+  - else
+    h3 Leave first answer!
 
 - if user_signed_in?
-  = form_with model: [@question, @answer], local: true do |form|
+  = form_with model: [@question, @answer] do |form|
     = form.label :body, 'Your answer:'
     br
     = form.text_area :body, size: '60x5'
