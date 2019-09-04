@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Thinkoverflow
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+
+  body
+    = render 'shared/nav'
+    div(class='container')
+      div(class='row justify-content-center mt-4')
+        div(class='col col-md-10')
+          = render 'shared/flash'
+          == yield

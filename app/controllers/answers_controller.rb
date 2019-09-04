@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :find_question, only: [:index, :new, :create]
-  before_action :find_answer, only: [:destroy, :update]
+  before_action :find_answer, only: [:update]
 
   def index
     @answers = @question.answers
@@ -16,10 +16,12 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.author = current_user
     if @answer.save
       redirect_to @question
     else
-      render :new
+      flash[:alert] = 'Error saving answer!'
+      render 'questions/show'
     end
   end
 
@@ -32,7 +34,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
+    @answer = Answer.find(params[:id])
+    if current_user&.author?(@answer)
+      @answer.destroy
+    else
+      flash[:error] = 'Error while deleting'
+    end
     redirect_to @answer.question
   end
 
