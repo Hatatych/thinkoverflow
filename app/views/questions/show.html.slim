@@ -10,7 +10,7 @@ hr
 .answers
   - if @question.answers.exists?
     h3 Answers:
-    = render @question.answers
+    = render @question.answers.as_appeared
     hr
   - else
     h3 Leave first answer!
