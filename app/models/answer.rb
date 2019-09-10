@@ -4,4 +4,6 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   scope :as_appeared, -> { order(created_at: :desc) }
+  scope :best, -> { where(best: true) }
+  scope :casual, -> { where(best: false) }
 end
