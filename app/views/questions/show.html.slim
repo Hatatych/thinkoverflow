@@ -9,10 +9,10 @@ hr
   = render 'shared/errors', resource: @answer
 .answers
   - if @question.answers.exists?
-    - if @question.answers.best.exists?
+    - if @question.best_answer
       .best_answer
         h3 Best answer:
-        = render @question.answers.best
+        = render @question.best_answer
       hr
       h3 Other answers:
     - else
